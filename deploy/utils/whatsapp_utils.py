@@ -3,7 +3,7 @@ from flask import current_app, jsonify
 import json
 import requests
 
-from app.services.openai_service import generate_response
+from deploy.services.openai_service import generate_response
 import re
 from dotenv import load_dotenv
 import os
@@ -17,7 +17,7 @@ VERSION = os.getenv("VERSION")
 
 APP_ID = os.getenv("APP_ID")
 APP_SECRET = os.getenv("APP_SECRET")
-print(RECIPIENT_WAID)
+
 
 def log_http_response(response):
     logging.info(f"Status: {response.status_code}")
