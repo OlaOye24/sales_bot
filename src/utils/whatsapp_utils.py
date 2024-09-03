@@ -3,7 +3,7 @@ from flask import current_app, jsonify
 import json
 import requests
 
-from deploy.services.openai_service import generate_response
+from src.services.openai_service import generate_response
 import re
 from dotenv import load_dotenv
 import os

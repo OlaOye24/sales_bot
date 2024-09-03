@@ -1,6 +1,6 @@
 import logging
 
-from deploy import create_app
+from src import create_app
 
 
 app = create_app()
