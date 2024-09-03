@@ -101,14 +101,14 @@ def process_whatsapp_message(body):
     #response = generate_response(message_body)
 
     # OpenAI Integration
-    response = generate_response(message_body, wa_id, name)
+    response = generate_response(json.dumps({'phone': message['from'], 'message': message_body}), wa_id, name)
     response = process_text_for_whatsapp(response)
-    
+    logging.info(message['from'])
     #data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response)
     data = {
             "messaging_product": "whatsapp",
             "recipient_type": "individual",
-            "to": current_app.config["RECIPIENT_WAID"],
+            "to": message['from'],#current_app.config["RECIPIENT_WAID"],
             "type": "text",
             "text": {"preview_url": 0, "body": response},
         }
