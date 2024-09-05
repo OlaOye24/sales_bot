@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 import time
 import logging
+from src.services.firestore_utils import read_collection, write_document, query_collection
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -34,13 +35,14 @@ def create_assistant(file):
 
 # Use context manager to ensure the shelf file is closed properly
 def check_if_thread_exists(wa_id):
-    with shelve.open("threads_db") as threads_shelf:
-        return threads_shelf.get(wa_id, None)
-
+    # Query Firestore to check if the document exists
+    threads = query_collection("threads_db", "wa_id", "==", wa_id)
+    return threads[0] if threads else None
 
 def store_thread(wa_id, thread_id):
-    with shelve.open("threads_db", writeback=True) as threads_shelf:
-        threads_shelf[wa_id] = thread_id
+    # Write or update the document in Firestore
+    data = {"wa_id": wa_id, "thread_id": thread_id}
+    write_document("threads_db", wa_id, data)
 
 
 def run_assistant(thread, name):
